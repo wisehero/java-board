@@ -1,10 +1,21 @@
 services:
   mysql:
-    image: 'mysql:latest'
-    environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+    image: mysql:8.0                  # 1. 버전 고정 (latest는 비추천)
+    container_name: my-board-db       # 2. 컨테이너 이름 지정 (관리 편의성)
+    restart: always                   # 3. 도커 재시작 시 자동 실행
     ports:
-      - '3306'
+      - "3306:3306"                   # 4. 호스트 포트 고정
+    environment:
+      MYSQL_DATABASE: board           # (java -> board 로 변경 제안)
+      MYSQL_ROOT_PASSWORD: verysecret
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: secret
+      TZ: Asia/Seoul                  # 5. 타임존 설정 (KST)
+    command:                          # 6. 한글 및 이모지 완벽 지원 설정
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - board-mysql-data:/var/lib/mysql
+
+volumes:
+  board-mysql-data:
