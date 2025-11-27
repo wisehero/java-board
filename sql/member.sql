@@ -122,3 +122,5 @@ VALUES ('user001', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG13AXN.GgIdGqXe4.
        ('user098', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG13AXN.GgIdGqXe4.', '사용자098', NOW(), NOW()),
        ('user099', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG13AXN.GgIdGqXe4.', '사용자099', NOW(), NOW()),
        ('user100', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG13AXN.GgIdGqXe4.', '사용자100', NOW(), NOW());
+
+ALTER TABLE member ADD COLUMN role VARCHAR(50) NOT NULL DEFAULT 'USER';
