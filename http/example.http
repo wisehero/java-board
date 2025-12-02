@@ -5,7 +5,7 @@ GET http://localhost:8080/hello
 Accept: application/json
 
 ### 2. Example 생성 - POST 요청
-POST http://localhost:8080/example
+POST http://localhost:8080/examples
 Content-Type: application/json
 
 {
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### 3. Example 생성 - 다른 데이터
-POST http://localhost:8080/example
+POST http://localhost:8080/examples
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### 4. Example 생성 - 영문 데이터
-POST http://localhost:8080/example
+POST http://localhost:8080/examples
 Content-Type: application/json
 
 {
@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ### 5. Example 생성 - 빈 값 테스트
-POST http://localhost:8080/example
+POST http://localhost:8080/examples
 Content-Type: application/json
 
 {
@@ -41,10 +41,13 @@ Content-Type: application/json
 }
 
 ### 6. Example 생성 - null 테스트
-POST http://localhost:8080/example
+POST http://localhost:8080/examples
 Content-Type: application/json
 
 {
   "name": null,
   "description": null
 }
+
+### 7. Example 조회 - GET 요청
+GET http://localhost:8080/examples/1
