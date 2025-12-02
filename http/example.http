@@ -1,0 +1,50 @@
+### Example API 테스트
+
+### 1. Hello API - GET 요청
+GET http://localhost:8080/hello
+Accept: application/json
+
+### 2. Example 생성 - POST 요청
+POST http://localhost:8080/example
+Content-Type: application/json
+
+{
+  "name": "테스트 예제",
+  "description": "예제 설명입니다"
+}
+
+### 3. Example 생성 - 다른 데이터
+POST http://localhost:8080/example
+Content-Type: application/json
+
+{
+  "name": "Spring Boot Example",
+  "description": "Spring Boot를 사용한 예제입니다"
+}
+
+### 4. Example 생성 - 영문 데이터
+POST http://localhost:8080/example
+Content-Type: application/json
+
+{
+  "name": "JPA Example",
+  "description": "JPA repository example for testing"
+}
+
+### 5. Example 생성 - 빈 값 테스트
+POST http://localhost:8080/example
+Content-Type: application/json
+
+{
+  "name": "",
+  "description": ""
+}
+
+### 6. Example 생성 - null 테스트
+POST http://localhost:8080/example
+Content-Type: application/json
+
+{
+  "name": null,
+  "description": null
+}
