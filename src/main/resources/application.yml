@@ -2,10 +2,16 @@ spring:
   application:
     name: java-board
   datasource:
-    url: jdbc:mysql://localhost:3306/board?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
-    username: myuser
-    password: secret
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    master:
+      username: myuser
+      password: secret
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/board?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+    slave:
+      username: myuser # Slave에는 읽기 권한만 있는 계정을 쓰는 게 더 안전합니다 (여기선 편의상 동일)
+      password: secret
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3307/board?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
 
   jpa:
     hibernate:

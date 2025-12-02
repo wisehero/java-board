@@ -6,6 +6,7 @@ CREATE TABLE member
     login_id   VARCHAR(255) NOT NULL,
     password   VARCHAR(255) NOT NULL,
     nick_name  VARCHAR(255) NOT NULL,
+    role       VARCHAR(50)  NOT NULL DEFAULT 'USER',
 
     -- ★ 추가된 컬럼들
     created_at DATETIME(6),              -- 생성 시간

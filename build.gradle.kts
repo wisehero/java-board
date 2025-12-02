@@ -30,8 +30,6 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok")
 
-    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-
     runtimeOnly("com.mysql:mysql-connector-j")
     annotationProcessor("org.projectlombok:lombok")
 

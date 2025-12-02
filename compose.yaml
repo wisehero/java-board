@@ -1,21 +1,59 @@
 services:
-  mysql:
-    image: mysql:8.0                  # 1. 버전 고정 (latest는 비추천)
-    container_name: my-board-db       # 2. 컨테이너 이름 지정 (관리 편의성)
-    restart: always                   # 3. 도커 재시작 시 자동 실행
+  # === 1. Master DB (쓰기 전용) ===
+  mysql-master:
+    image: mysql:8.0
+    container_name: board-master-db
+    restart: always
     ports:
-      - "3306:3306"                   # 4. 호스트 포트 고정
+      - "3306:3306"  # 기존 포트 유지
     environment:
-      MYSQL_DATABASE: board           # (java -> board 로 변경 제안)
+      MYSQL_DATABASE: board
       MYSQL_ROOT_PASSWORD: verysecret
       MYSQL_USER: myuser
       MYSQL_PASSWORD: secret
-      TZ: Asia/Seoul                  # 5. 타임존 설정 (KST)
-    command:                          # 6. 한글 및 이모지 완벽 지원 설정
+      TZ: Asia/Seoul
+    command:
+      - --server-id=1                # ★ Master ID
+      - --log-bin=mysql-bin          # ★ 바이너리 로그 활성화
+      - --binlog-format=ROW
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     volumes:
-      - board-mysql-data:/var/lib/mysql
+      - board-master-data:/var/lib/mysql
+    networks:
+      - board-net
 
+  # === 2. Slave DB (읽기 전용) ===
+  mysql-slave:
+    image: mysql:8.0
+    container_name: board-slave-db
+    restart: always
+    ports:
+      - "3307:3306"  # ★ 호스트의 3307 포트로 접속
+    environment:
+      MYSQL_DATABASE: board
+      MYSQL_ROOT_PASSWORD: verysecret
+      TZ: Asia/Seoul
+    command:
+      - --server-id=2                # ★ Slave ID (Master와 다름)
+      - --relay-log=mysql-relay-bin  # ★ 릴레이 로그 활성화
+      - --read-only=1                # ★ 읽기 전용
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./db/conf/slave:/etc/mysql/conf.d
+      - board-slave-data:/var/lib/mysql
+    depends_on:
+      - mysql-master # Master가 먼저 떠야 함
+    networks:
+      - board-net
+
+# 볼륨 정의 (새로운 볼륨들)
 volumes:
-  board-mysql-data:
+  board-master-data:
+  board-slave-data:
+
+# 네트워크 정의 (컨테이너끼리 통신용)
+networks:
+  board-net:
+    driver: bridge
