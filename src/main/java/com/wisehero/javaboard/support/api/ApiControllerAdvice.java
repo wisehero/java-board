@@ -1,5 +1,9 @@
 package com.wisehero.javaboard.support.api;
 
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.wisehero.javaboard.support.error.CoreException;
 import com.wisehero.javaboard.support.error.ErrorType;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.server.ServerWebInputException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-import tools.jackson.databind.DatabindException;
-import tools.jackson.databind.exc.InvalidFormatException;
-import tools.jackson.databind.exc.MismatchedInputException;
+
 
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -54,7 +56,7 @@ public class ApiControllerAdvice {
         switch (rootCause) {
             case InvalidFormatException invalidFormat -> {
                 String fieldName = invalidFormat.getPath().stream()
-                        .map(ref -> ref.getPropertyName() != null ? ref.getPropertyName() : "?")
+                        .map(ref -> ref.getFieldName() != null ? ref.getFieldName() : "?")
                         .collect(Collectors.joining("."));
 
                 String valueIndicationMessage = "";
@@ -74,14 +76,14 @@ public class ApiControllerAdvice {
             }
             case MismatchedInputException mismatchedInput -> {
                 String fieldPath = mismatchedInput.getPath().stream()
-                        .map(ref -> ref.getPropertyName() != null ? ref.getPropertyName() : "?")
+                        .map(ref -> ref.getFieldName() != null ? ref.getFieldName() : "?")
                         .collect(Collectors.joining("."));
                 errorMessage = String.format("필수 필드 '%s'이(가) 누락되었습니다.", fieldPath);
 
             }
-            case DatabindException jsonMapping -> {
+            case JsonMappingException jsonMapping -> {
                 String fieldPath = jsonMapping.getPath().stream()
-                        .map(ref -> ref.getPropertyName() != null ? ref.getPropertyName() : "?")
+                        .map(ref -> ref.getFieldName() != null ? ref.getFieldName() : "?")
                         .collect(Collectors.joining("."));
                 errorMessage = String.format("필드 '%s'에서 JSON 매핑 오류가 발생했습니다: %s",
                         fieldPath, jsonMapping.getOriginalMessage());

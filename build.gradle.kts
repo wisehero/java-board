@@ -26,7 +26,11 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-webmvc")
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude(group = "org.springframework.boot", module = "spring-boot-jackson")
+    }
+    implementation("org.springframework.boot:spring-boot-jackson2")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     compileOnly("org.projectlombok:lombok")
 
