@@ -21,3 +21,12 @@ CREATE TABLE notice
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
+
+ALTER TABLE notice
+ADD COLUMN is_pinned TINYINT(1) NOT NULL DEFAULT 0 AFTER scheduled_at;
+
+ALTER TABLE notice
+    ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'PUBLISHED' AFTER is_pinned;
+
+ALTER TABLE notice
+RENAME COLUMN scheduled_at TO published_at;
