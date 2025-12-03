@@ -3,10 +3,7 @@ package com.wisehero.javaboard.example;
 import com.wisehero.javaboard.support.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -20,7 +17,16 @@ public class ExampleController {
         log.info("hello");
     }
 
-    @PostMapping("/example")
+    @GetMapping("/examples/{id}")
+    public ApiResponse<ExampleResponse.ExampleInfo> getExample(@PathVariable Long id) {
+        ExampleEntity exampleEntity = exampleService.getExampleEntity(id);
+        ExampleResponse.ExampleInfo result = ExampleResponse.ExampleInfo.from(exampleEntity);
+
+        return ApiResponse.success(result);
+    }
+
+
+    @PostMapping("/examples")
     public ApiResponse<ExampleResponse.ExampleInfo> newExample(@RequestBody ExampleRequest.Create request) {
         ExampleResponse.ExampleInfo result = exampleService.createExampleEntity(
                 request.name(),
