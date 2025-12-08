@@ -15,12 +15,16 @@ spring:
 
   jpa:
     open-in-view: false
+    generate-ddl: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true # 쿼리를 한 줄 말고 예쁘게 줄바꿈해서 출력
         highlight_sql: true # 쿼리에 색상 입히기 (가독성 UP)
+        default_batch_fetch_size: 100
+        timezone.default_storage: NORMALIZE_UTC
+        jdbc.time_zone: UTC
 
 logging:
   level:
@@ -29,3 +33,11 @@ logging:
     org.springframework.orm.jpa: DEBUG
     org.hibernate.resource.transaction: DEBUG
     org.hibernate.SQL: DEBUG # SQL 쿼리 출력
+
+---
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create

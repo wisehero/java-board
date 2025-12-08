@@ -7,7 +7,6 @@ import com.wisehero.javaboard.support.error.CoreException;
 import com.wisehero.javaboard.support.error.ErrorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
