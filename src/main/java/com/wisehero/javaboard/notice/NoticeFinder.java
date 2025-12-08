@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class NoticeFinder {
 
     private final NoticeJpaRepository noticeJpaRepository;
 
+    @Transactional(readOnly = true)
     public Notice findById(Long id) {
         return noticeJpaRepository.findByIdNotDeleted(id)
                 .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND, "Notice not found with id: " + id));

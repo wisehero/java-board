@@ -1,0 +1,64 @@
+### 공지사항 조회
+GET http://localhost:8080/api/v1/notices/3
+Accept: application/json
+
+###
+
+### 공지사항 생성 - 임시저장
+POST http://localhost:8080/api/v1/notices
+Content-Type: application/json
+X-USER-ID: 1
+
+{
+  "title": "테스트 공지사항",
+  "content": "공지사항 내용입니다.",
+  "publishedAt": "2025-12-10T10:00:00",
+  "status": "RESERVED"
+}
+
+###
+
+### 공지사항 생성 - 즉시 게시
+POST http://localhost:8080/api/v1/notices
+Content-Type: application/json
+X-USER-ID: 1
+
+{
+  "title": "긴급 공지사항",
+  "content": "즉시 게시되는 공지사항입니다.",
+  "publishedAt": "2024-12-03T09:00:00",
+  "status": "PUBLISHED"
+}
+
+###
+
+### 공지사항 생성 - 예약 게시
+POST http://localhost:8080/api/v1/notices
+Content-Type: application/json
+X-USER-ID: 1
+
+{
+  "title": "예약 공지사항",
+  "content": "미래에 게시될 공지사항입니다.",
+  "publishedAt": "2025-12-04T14:48:00",
+  "status": "RESERVED"
+}
+
+###
+
+### 공지사항 수정
+PATCH http://localhost:8080/api/v1/notices/1
+Content-Type: application/json
+
+{
+  "title": "수정된 공지사항 제목",
+  "content": "수정된 공지사항 내용입니다.",
+  "publishedAt": "2024-12-05T15:00:00"
+}
+
+###
+
+### 공지사항 삭제
+DELETE http://localhost:8080/api/v1/notices/1
+
+###

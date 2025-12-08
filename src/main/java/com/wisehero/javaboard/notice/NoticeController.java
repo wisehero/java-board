@@ -14,12 +14,12 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    @GetMapping("/api/v1/notices/{noticeId}")
+    @GetMapping("/{noticeId}")
     public ApiResponse<NoticeResponse.Detail> getNotice(@PathVariable Long noticeId) {
         return ApiResponse.success(noticeService.getNotice(noticeId));
     }
 
-    @PostMapping("/api/v1/notices")
+    @PostMapping
     public ApiResponse<NoticeResponse.Detail> createNotice(@RequestHeader("X-USER-ID") Long memberId,
                                                            @RequestBody NoticeRequest.Create request) {
         NoticeCommand.Create command = request.toCommand(memberId);
@@ -28,7 +28,7 @@ public class NoticeController {
         return ApiResponse.success(result);
     }
 
-    @PatchMapping("/api/v1/notices/{noticeId}")
+    @PatchMapping("/{noticeId}")
     public ApiResponse<Void> updateNotice(@PathVariable Long noticeId,
                                          @RequestBody NoticeRequest.Update request) {
         NoticeCommand.Update command = request.toCommand(noticeId);
@@ -38,7 +38,7 @@ public class NoticeController {
         return ApiResponse.success(null);
     }
 
-    @DeleteMapping("/api/v1/notices/{noticeId}")
+    @DeleteMapping("/{noticeId}")
     public ApiResponse<Void> deleteNotice(@PathVariable Long noticeId) {
         noticeService.deleteNotice(noticeId);
 

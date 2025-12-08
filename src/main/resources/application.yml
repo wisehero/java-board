@@ -14,11 +14,18 @@ spring:
       jdbc-url: jdbc:mysql://localhost:3307/board?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: validate
-
-    show-sql: true
     properties:
       hibernate:
         format_sql: true # 쿼리를 한 줄 말고 예쁘게 줄바꿈해서 출력
         highlight_sql: true # 쿼리에 색상 입히기 (가독성 UP)
+
+logging:
+  level:
+    com.wisehero.javaboard.support.logging: INFO
+    org.springframework.transaction.interceptor: TRACE
+    org.springframework.orm.jpa: DEBUG
+    org.hibernate.resource.transaction: DEBUG
+    org.hibernate.SQL: DEBUG # SQL 쿼리 출력
