@@ -51,7 +51,6 @@ subprojects {
 
     dependencies{
         implementation("org.springframework.boot:spring-boot-starter-validation")
-
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
         compileOnly("org.projectlombok:lombok")
