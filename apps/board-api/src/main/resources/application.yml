@@ -1,6 +1,10 @@
 spring:
   application:
     name: java-board
+  config:
+    import:
+      - logging.yml
+      - monitoring.yml
   datasource:
     master:
       username: myuser
@@ -25,15 +29,6 @@ spring:
         default_batch_fetch_size: 100
         timezone.default_storage: NORMALIZE_UTC
         jdbc.time_zone: UTC
-
-logging:
-  level:
-    com.wisehero.javaboard.support.logging: INFO
-    org.springframework.transaction.interceptor: TRACE
-    org.springframework.orm.jpa: DEBUG
-    org.hibernate.resource.transaction: DEBUG
-    org.hibernate.SQL: DEBUG # SQL 쿼리 출력
-
 ---
 
 spring:
