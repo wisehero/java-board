@@ -1,0 +1,9 @@
+logging.config: classpath:logback/logback.xml
+
+logging:
+  level:
+    com.wisehero.javaboard.support.logging: INFO
+    org.springframework.transaction.interceptor: TRACE
+    org.springframework.orm.jpa: DEBUG
+    org.hibernate.resource.transaction: DEBUG
+    org.hibernate.SQL: DEBUG # SQL 쿼리 출력
