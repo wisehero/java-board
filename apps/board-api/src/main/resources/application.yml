@@ -1,3 +1,13 @@
+server:
+  port: 8080
+  shutdown: graceful
+  tomcat:
+    accept-count: 100 # 모든 요청 처리 스레드가 사용 중일 때, 추가 연결 요청을 대기시킬 수 있는 최대 큐 길이
+    max-connections: 8192 # 서버가 동시에 수락하고 처리할 수 있는 최대 연결 수
+    threads:
+      max: 200 # 최대 처리 스레드 수. 가상 스레드가 활성화된 경우엔 적용되지 않는다.
+      min-spare: 10 # 항상 유지하려는 최소 작업 스레드. 가상 스레드가 활성화된 경우엔 적용되지 않는다.
+
 spring:
   profiles:
     default: local
