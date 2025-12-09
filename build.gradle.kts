@@ -1,12 +1,20 @@
-plugins {
-    java
-    id("org.springframework.boot") version "4.0.0"
-    id("io.spring.dependency-management") version "1.1.7"
+import org.gradle.api.Project.DEFAULT_VERSION
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
+/** --- configuration functions --- */
+fun getGitHash(): String {
+    return runCatching {
+        providers.exec {
+            commandLine("git", "rev-parse", "--short", "HEAD")
+        }.standardOutput.asText.get().trim()
+    }.getOrElse { "init" }
 }
 
-group = "com.wisehero"
-version = "0.0.1-SNAPSHOT"
-description = "java-board"
+plugins {
+    java
+    id("org.springframework.boot") apply false
+    id("io.spring.dependency-management")
+}
 
 java {
     toolchain {
@@ -20,37 +28,61 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-}
+allprojects {
+    val projectGroup: String by project
+    group = projectGroup
+    version = if (version == DEFAULT_VERSION) getGitHash() else version
 
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web") {
-        exclude(group = "org.springframework.boot", module = "spring-boot-jackson")
+    repositories {
+        mavenCentral()
     }
-    implementation("org.springframework.boot:spring-boot-jackson2")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-
-    compileOnly("org.projectlombok:lombok")
-    runtimeOnly("com.mysql:mysql-connector-j")
-    annotationProcessor("org.projectlombok:lombok")
-
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation("io.micrometer:micrometer-tracing-bridge-brave")
-
-    implementation("org.apache.poi:poi:5.2.5")
-    implementation("org.apache.poi:poi-ooxml:5.2.5")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
-    testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation("org.testcontainers:testcontainers-junit-jupiter")
-    testImplementation("org.testcontainers:testcontainers-mysql")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${project.properties["springCloudDependenciesVersion"]}")
+        }
+    }
+
+    dependencies{
+        implementation("org.springframework.boot:spring-boot-starter-validation")
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+        compileOnly("org.projectlombok:lombok")
+        runtimeOnly("com.mysql:mysql-connector-j")
+        annotationProcessor("org.projectlombok:lombok")
+
+        testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
+        testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+        testImplementation("org.springframework.boot:spring-boot-testcontainers")
+        testImplementation("org.testcontainers:testcontainers-junit-jupiter")
+        testImplementation("org.testcontainers:testcontainers-mysql")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    }
+
+    tasks.withType(Jar::class) { enabled = true }
+
+    configure(allprojects.filter { it.parent?.name.equals("apps") }) {
+        tasks.withType(Jar::class) { enabled = false }
+        tasks.withType(BootJar::class) { enabled = true }
+    }
+    tasks.withType(BootJar::class) { enabled = false }
+
+    tasks.test {
+        maxParallelForks = 1
+        useJUnitPlatform()
+        systemProperty("user.timezone", "Asia/Seoul")
+        systemProperty("spring.profiles.active", "test")
+        jvmArgs("-Xshare:off")
+    }
+
 }
+
+project("apps") { tasks.configureEach { enabled = false } }
+project("supports") { tasks.configureEach { enabled = false } }

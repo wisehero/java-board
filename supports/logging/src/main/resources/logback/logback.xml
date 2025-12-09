@@ -1,0 +1,9 @@
+<configuration>
+    <springProfile name="local,local-dev,test">
+        <include resource="appenders/plain-console-appender.xml"/>
+        <logger name="com.wisehero" level="DEBUG"/>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+</configuration>
