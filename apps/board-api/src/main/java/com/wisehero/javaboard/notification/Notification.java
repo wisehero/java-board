@@ -26,6 +26,9 @@ public class Notification extends BaseTimeEntity {
     private NotificationType notificationType;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     // 클릭시 이동할 URL;
@@ -42,6 +45,7 @@ public class Notification extends BaseTimeEntity {
         this.receiverId = command.receiverId();
         this.senderId = command.senderId();
         this.notificationType = command.notificationType();
+        this.title= command.title();
         this.content = command.content();
         this.url = command.url();
         this.targetId = command.targetId();
